@@ -6,7 +6,9 @@
  * - For production (frontend on GitHub Pages, backend elsewhere):
  *   set to your backend URL, e.g. 'https://your-server.com'
  */
-export const API_BASE = '';
+export const API_BASE = window.location.hostname.includes('github.io') 
+  ? 'http://localhost:8080' 
+  : '';
 
 /**
  * Determines the correct relative path prefix for navigation.
