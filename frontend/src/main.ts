@@ -3,16 +3,19 @@
 // This file orchestrates module initialization & inter-module communication.
 
 import './style.css';
-import { getSession, clearSession } from './shared';
+import { getSession, clearSession, requireAuth, navigateTo } from './shared';
 import { initWallet } from './modules/wallet';
 import { initExplorer } from './modules/blockchain';
 import { initMining } from './modules/mining';
 import { initTransactions } from './modules/transactions';
 
-// ─── Auth Guard ───
+// ─── Auth Guard: Protect dashboard from unauthenticated access ───
+requireAuth();
+
 const session = getSession();
 if (!session.token || !session.username || !session.wallet) {
-  window.location.href = '/login.html';
+  clearSession();
+  navigateTo('login.html');
   throw new Error('Not authenticated');
 }
 
@@ -43,7 +46,7 @@ initTransactions(walletAddress!, () => {
 document.getElementById('refresh-btn')!.addEventListener('click', refreshAll);
 document.getElementById('logout-btn')!.addEventListener('click', () => {
   clearSession();
-  window.location.href = '/login.html';
+  navigateTo('login.html');
 });
 
 // ─── Boot ───

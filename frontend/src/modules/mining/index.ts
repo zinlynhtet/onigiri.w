@@ -1,6 +1,6 @@
 // ─── Mining Module: Mempool + Mine Block ───
 
-import { api, toast } from '../../shared';
+import { api, toast, API_BASE } from '../../shared';
 import type { Transaction } from '../../shared';
 
 export function initMining(onMined: () => void) {
@@ -26,7 +26,7 @@ export function initMining(onMined: () => void) {
 
   async function fetchMempool() {
     try {
-      const res = await api('/api/mempool');
+      const res = await api(`${API_BASE}/api/mempool`);
       if (!res.ok) throw new Error('Failed to load mempool');
       const data: Transaction[] = await res.json();
       renderMempool(data);
@@ -46,7 +46,7 @@ export function initMining(onMined: () => void) {
     spinner.classList.add('active');
 
     try {
-      const res = await api('/api/mine', { method: 'POST' });
+      const res = await api(`${API_BASE}/api/mine`, { method: 'POST' });
       if (!res.ok) throw new Error('Mining failed');
       toast('Block mined successfully! ⛏️', 'success');
       onMined();

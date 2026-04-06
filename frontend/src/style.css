@@ -1025,3 +1025,198 @@ footer {
         gap: 0.25rem;
     }
 }
+
+/* ─── SMOOTH ANIMATIONS & POLISH ─── */
+
+/* Page entrance animation */
+@keyframes pageEntrance {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.app {
+    animation: pageEntrance 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Auth page animated background */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+}
+
+.auth-shell {
+    background-size: 200% 200%;
+    animation: pageEntrance 0.6s cubic-bezier(0.22, 1, 0.36, 1) both, gradientShift 15s ease infinite;
+}
+
+/* Auth card entrance with scale */
+@keyframes cardPop {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.auth-card {
+    animation: cardPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+/* Auth logo bounce */
+@keyframes logoBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.auth-logo {
+    animation: logoBounce 2s ease-in-out infinite;
+    transition: transform 0.3s;
+}
+
+.auth-logo:hover {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* Form input slide-in on auth pages */
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-form .input-group:nth-child(1) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
+.auth-form .input-group:nth-child(2) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both; }
+.auth-form .input-group:nth-child(3) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both; }
+.auth-form .btn-primary { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both; }
+
+/* Enhanced input focus */
+.input-group input {
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.input-group input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px var(--primary-glow), 0 0 20px rgba(232, 69, 69, 0.1);
+}
+
+/* Button loading state */
+@keyframes btnPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.btn-primary.loading {
+    pointer-events: none;
+    animation: btnPulse 1.2s ease-in-out infinite;
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: none;
+}
+
+/* Card hover lift */
+.card {
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Dashboard cards staggered entrance */
+.controls .card:nth-child(1) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+.controls .card:nth-child(2) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+.controls .card:nth-child(3) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both; }
+.controls .card:nth-child(4) { animation: slideInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; }
+
+/* Block entrance animation */
+@keyframes blockSlideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.block {
+    animation: blockSlideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+.block:hover {
+    transform: translateX(4px);
+    box-shadow: -4px 0 20px var(--primary-glow);
+}
+
+/* Auth link glow */
+.auth-link {
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.auth-link:hover {
+    text-shadow: 0 0 8px rgba(255, 140, 66, 0.3);
+}
+
+/* Toast backdrop blur */
+.toast {
+    backdrop-filter: blur(10px);
+}
+
+/* Mempool transaction hover */
+.mempool-tx {
+    transition: background 0.2s, transform 0.2s;
+}
+
+.mempool-tx:hover {
+    background: rgba(0, 0, 0, 0.25);
+    transform: translateX(4px);
+}
+
+/* Wallet balance shimmer */
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+.balance-amount {
+    background-size: 200% auto;
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+/* Header smooth reveal */
+header {
+    animation: slideInUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+footer {
+    animation: pageEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+/* User pill hover */
+.user-pill {
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.user-pill:hover {
+    border-color: var(--border-active);
+    box-shadow: 0 0 12px var(--primary-glow);
+}
+
+/* Status pulse */
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status span {
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+/* Refresh spin */
+.btn-icon:active {
+    transform: rotate(180deg);
+    transition: transform 0.4s;
+}
+
+/* QR glow */
+.qr-section canvas {
+    transition: box-shadow 0.3s;
+}
+
+.qr-section canvas:hover {
+    box-shadow: 0 0 15px rgba(232, 69, 69, 0.3);
+}

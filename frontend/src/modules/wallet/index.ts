@@ -1,7 +1,7 @@
 // ─── Wallet Module: Balance, QR, Copy ───
 
 import QRCode from 'qrcode';
-import { toast } from '../../shared';
+import { toast, API_BASE } from '../../shared';
 import type { BalanceResponse } from '../../shared';
 
 export function initWallet(walletAddress: string) {
@@ -34,7 +34,7 @@ export function initWallet(walletAddress: string) {
   // fetchBalance function
   async function fetchBalance() {
     try {
-      const res = await fetch(`/api/balance/${walletAddress}`);
+      const res = await fetch(`${API_BASE}/api/balance/${walletAddress}`);
       if (!res.ok) return;
       const data: BalanceResponse = await res.json();
       $balanceAmount.textContent = data.balance.toFixed(2);

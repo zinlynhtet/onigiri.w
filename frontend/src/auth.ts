@@ -1,11 +1,10 @@
 import './style.css';
-import { getToken, saveSession, toast } from './shared';
+import { redirectIfAuthenticated, saveSession, toast, navigateTo, API_BASE } from './shared';
 import type { AuthResponse } from './shared';
 
-// ─── Redirect if already logged in ───
-// We only do this on login and signup, not necessarily on forgot/reset since they might be logged out anyway.
-if (getToken() && (document.getElementById('login-form') || document.getElementById('signup-form'))) {
-  window.location.href = '/index.html';
+// ─── Route Guard: Redirect logged-in users away from login/signup ───
+if (document.getElementById('login-form') || document.getElementById('signup-form')) {
+  redirectIfAuthenticated();
 }
 
 // ─── Password Visibility Toggle ───
@@ -29,12 +28,26 @@ const $signupForm = document.getElementById('signup-form') as HTMLFormElement;
 const $forgotForm = document.getElementById('forgot-form') as HTMLFormElement;
 const $resetForm = document.getElementById('reset-form') as HTMLFormElement;
 
-async function apiRequest(endpoint: string, payload: any, successMsg: string, successCallback: (data?: any) => void) {
+/**
+ * Generic API request handler.
+ * Fixed: parses response body ONCE, then passes parsed data to callback.
+ */
+async function apiRequest(
+    endpoint: string,
+    payload: any,
+    successMsg: string,
+    successCallback: (data?: any) => void,
+    expectJson: boolean = false
+) {
     const $submitBtn = document.getElementById('auth-submit') as HTMLButtonElement;
-    if ($submitBtn) $submitBtn.disabled = true;
+    if ($submitBtn) {
+        $submitBtn.disabled = true;
+        $submitBtn.classList.add('loading');
+    }
 
     try {
-        const res = await fetch(endpoint, {
+        const fullUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+        const res = await fetch(fullUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
@@ -45,25 +58,26 @@ async function apiRequest(endpoint: string, payload: any, successMsg: string, su
             throw new Error(errText || 'Request failed');
         }
 
+        // Parse the response body ONCE here, before showing toast
+        let data = null;
+        if (expectJson) {
+            data = await res.json();
+        }
+
         toast(successMsg, 'success');
-        
-        // Wait slightly for toast animation
-        setTimeout(async () => {
-             // For responses that return JSON (like login)
-            let data = null;
-            const contentType = res.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                // we only attempt json parse if the stream wasn't consumed. fetch clones if needed but we just trust it here
-                // Wait, if res is already ok, let's just let the callback handle json if it needs it.
-            }
-            // For simplicity, we just pass the raw response to the callback so it can parse it
-            successCallback(res);
+
+        // Small delay for toast animation, then run callback with parsed data
+        setTimeout(() => {
+            successCallback(data);
         }, 800);
         
     } catch (e) {
         toast((e as Error).message, 'error');
     } finally {
-        if ($submitBtn) $submitBtn.disabled = false;
+        if ($submitBtn) {
+            $submitBtn.disabled = false;
+            $submitBtn.classList.remove('loading');
+        }
     }
 }
 
@@ -74,11 +88,10 @@ if ($loginForm) {
         const email = (document.getElementById('email') as HTMLInputElement).value;
         const password = (document.getElementById('password') as HTMLInputElement).value;
         
-        apiRequest('/api/login', { email, password }, 'Login successful! Redirecting…', async (res: Response) => {
-            const data: AuthResponse = await res.json();
+        apiRequest('/api/login', { email, password }, 'Login successful! Redirecting…', (data: AuthResponse) => {
             saveSession(data.token, data.username, data.wallet_address);
-            window.location.href = '/index.html';
-        });
+            navigateTo('index.html');
+        }, true); // expectJson = true
     });
 }
 
@@ -91,7 +104,7 @@ if ($signupForm) {
         const password = (document.getElementById('password') as HTMLInputElement).value;
         
         apiRequest('/api/register', { email, username, password }, 'Account created! Please log in.', () => {
-            window.location.href = '/login.html';
+            navigateTo('login.html');
         });
     });
 }
@@ -112,7 +125,6 @@ if ($forgotForm) {
 if ($resetForm) {
     $resetForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Extract token from URL ?token=XYZ
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
         
@@ -124,7 +136,7 @@ if ($resetForm) {
         const password = (document.getElementById('password') as HTMLInputElement).value;
         
         apiRequest('/api/reset-password', { token, new_password: password }, 'Password successfully reset! Please log in.', () => {
-            window.location.href = '/login.html';
+            navigateTo('login.html');
         });
     });
 }

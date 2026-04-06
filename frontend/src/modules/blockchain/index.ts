@@ -1,7 +1,7 @@
 // ─── Blockchain Explorer Module ───
 
 import type { Block, Transaction } from '../../shared';
-import { toast } from '../../shared';
+import { toast, API_BASE } from '../../shared';
 
 export function initExplorer() {
   const $blocks = document.getElementById('blocks') as HTMLDivElement;
@@ -53,7 +53,7 @@ export function initExplorer() {
 
   async function fetchBlockchain() {
     try {
-      const res = await fetch('/api/blockchain');
+      const res = await fetch(`${API_BASE}/api/blockchain`);
       if (!res.ok) throw new Error('Failed to load blockchain');
       const data: Block[] = await res.json();
       renderBlocks(data);

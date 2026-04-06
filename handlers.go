@@ -172,7 +172,7 @@ func handlePostTransaction(w http.ResponseWriter, r *http.Request) {
 	blockchain.saveChain()
 	blockchain.mu.Unlock()
 	
-	log.Printf("Transaction queued by %s: %s -> %s (%.2f FLK)", user.Username, tx.Sender, tx.Receiver, tx.Amount)
+	log.Printf("Transaction queued by %s: %s -> %s (%.2f OGZ)", user.Username, tx.Sender, tx.Receiver, tx.Amount)
 	
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusAccepted)

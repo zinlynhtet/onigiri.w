@@ -1,6 +1,6 @@
 // ─── Transaction Module: Send OGZ ───
 
-import { api, toast } from '../../shared';
+import { api, toast, API_BASE } from '../../shared';
 
 export function initTransactions(walletAddress: string, onSent: () => void) {
   const $txForm = document.getElementById('tx-form') as HTMLFormElement;
@@ -21,7 +21,7 @@ export function initTransactions(walletAddress: string, onSent: () => void) {
     };
 
     try {
-      const res = await api('/api/transaction', {
+      const res = await api(`${API_BASE}/api/transaction`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
