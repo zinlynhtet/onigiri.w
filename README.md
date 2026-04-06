@@ -62,31 +62,44 @@ docker run -p 8080:8080 onigiri-z
 ## 🏗️ Architecture
 
 ```mermaid
-mindmap
-  root((Onigiri.Z))
-    Backend
-      Core
-        ["Consensus (PoW)"]
-        ["Blocks & Transactions"]
-      API
-        ["Authentication (JWT)"]
-        ["Public Routes"]
-        ["Protected Routes"]
-      Storage
-        ["blockchain.json"]
-        ["users.json"]
-    Frontend
-      Design
-        ["Enterprise Theme"]
-        ["Glassmorphism"]
-      Modules
-        ["Wallet (Balance, QR, Copy)"]
-        ["Explorer (Chain View)"]
-        ["Mining (Mempool)"]
-        ["Transactions"]
-      Education
-        ["Interactive Visualizations"]
-        ["Tamper Detection"]
+flowchart TD
+    %% Root
+    Root((Onigiri.Z))
+
+    %% Main Branches
+    Root --> Backend{Backend}
+    Root --> Frontend{Frontend}
+
+    %% Backend Hierarchy
+    Backend --> B_Core[Core]
+    Backend --> B_API[API]
+    Backend --> B_Storage[Storage]
+
+    B_Core --> B_Core1(Consensus PoW)
+    B_Core --> B_Core2(Blocks & Transactions)
+
+    B_API --> B_API1(Authentication JWT)
+    B_API --> B_API2(Public Routes)
+    B_API --> B_API3(Protected Routes)
+
+    B_Storage --> B_Store1[(blockchain.json)]
+    B_Storage --> B_Store2[(users.json)]
+
+    %% Frontend Hierarchy
+    Frontend --> F_Design[Design]
+    Frontend --> F_Modules[Modules]
+    Frontend --> F_Ed[Education]
+
+    F_Design --> F_Des1(Enterprise Theme)
+    F_Design --> F_Des2(Glassmorphism)
+
+    F_Modules --> F_Mod1(Wallet)
+    F_Modules --> F_Mod2(Explorer)
+    F_Modules --> F_Mod3(Mining)
+    F_Modules --> F_Mod4(Transactions)
+
+    F_Ed --> F_Ed1(Interactive Visualizations)
+    F_Ed --> F_Ed2(Tamper Detection)
 ```
 - **Go Backend**: `main.go`, `types.go`, `blockchain.go`, `handlers.go`, `auth_handlers.go`, `users.go`
 - **TypeScript Frontend**: `frontend/src/main.ts`, `frontend/src/auth.ts`, `frontend/src/types.ts`
