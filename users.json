@@ -1,0 +1,20 @@
+{
+  "john@example.com": {
+    "email": "john@example.com",
+    "username": "testuser1",
+    "password_hash": "$2a$10$kF9ARBYju8w1Glw02mNMoOdKMJAbFKz0JZZvNsD26WgCfllYn.Xaa",
+    "wallet_address": "ogz_997f6eb463c1236c5b406371d26eb740"
+  },
+  "mackk5504@gmail.com": {
+    "email": "mackk5504@gmail.com",
+    "username": "dmackflick2001",
+    "password_hash": "$2a$10$OPZf4amUcOQrqHQNenl12ulUBUuDTHwp5g.4zQzqfyej.u8hCArIq",
+    "wallet_address": "ogz_f8b6d0566ef763ccb926ba2dec74bbbb"
+  },
+  "test@onigiri.z": {
+    "email": "test@onigiri.z",
+    "username": "testuser",
+    "password_hash": "$2a$10$DHjH/Dk9mbWxa3LeRmd.JOl4d4yFNKtOEgS56egrgPcpnocVCUjcy",
+    "wallet_address": "ogz_05bcd0103d9dc81f12b04274c7f4398a"
+  }
+}

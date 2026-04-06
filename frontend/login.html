@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Onigiri.Z Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-shell">
+        <div class="card auth-card">
+            <div class="auth-logo">🍙</div>
+            <h1>Onigiri.Z</h1>
+            <p class="auth-sub">Secure Blockchain Node Access</p>
+
+            <div class="tabs">
+                <button class="tab active" id="login-tab">LOGIN</button>
+                <button class="tab" id="register-tab">REGISTER</button>
+            </div>
+
+            <form id="auth-form" class="auth-form">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group hidden" id="username-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Choose a username">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" id="auth-submit" class="btn btn-primary">Sign In</button>
+            </form>
+
+            <div class="auth-footer">&copy; 2026 Onigiri.Z Enterprise Systems</div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script type="module" src="/src/auth.ts"></script>
+</body>
+</html>

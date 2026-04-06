@@ -1,73 +1,40 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
-	"crypto/md5"
-	"crypto/sha256"
-	"io"
-	"fmt"
-	"time"
-	"encoding/json"
-	"encoding/hex"
 )
-
-type Block struct {
-	Position int64
-	Data BookCheckout
-	Timestamp string
-	Hash string
-	PrevHash string
-}
-
-type Book struct {
-	Id  string `json:"id"`
-	Title string `json:"title"`
-	Author string `json:"author"`
-	PublishedDate string `json:"published_date"`
-	ISBN string `json:"isbn"`
-}
-
-type BookCheckout struct {
-	BookId string `json:"book_id"`
-	User string `json:"user"`
-	CheckoutDate string `json:"checkout_date"`
-	IsGenesis bool `json:"is_genesis"`
-}
-
-type BlockChain struct {
-	blocks []*Block
-}
 
 var blockchain *BlockChain
 
-func newBook(w http.ResponseWriter, r *http.Request){
-	var book Book
-	if err := json.NewDecoder(r.Body).Decode(&book); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Printf("Could not decode JSON: %v", err)
-		w.Write([]byte("Could not create a new book"))
-		return
-	}
-	h := md5.New()
-	io.WriteString(h, book.ISBN + book.PublishedDate)
-	book.Id = fmt.Sprintf("%x", h.Sum(nil))
+func main() {
+	// Initialize blockchain (loads from file if exists, otherwise creates genesis)
+	blockchain = initBlockchain()
 	
-}
+	// Initialize user store
+	initUserStore()
 
-func writeBlocks(w http.ResponseWriter, r *http.Request){
-	
-}
-
-func getBlockchain(w http.ResponseWriter, r *http.Request){
-	
-}
-
-func main(){
 	r := mux.NewRouter()
-	r.HandleFunc("/", getBlockchain).Methods("GET")
-	r.HandleFunc("/", writeBlocks).Methods("POST")
-	r.HandleFunc("/new", newBook).Methods("POST")
-	log.Fatal(http.ListenAndServe(":8080", r))	
+
+	// Public API Routes
+	r.HandleFunc("/api/register", handleRegister).Methods("POST")
+	r.HandleFunc("/api/login", handleLogin).Methods("POST")
+	r.HandleFunc("/api/blockchain", handleGetBlockchain).Methods("GET")
+	r.HandleFunc("/api/balance/{address}", handleGetBalance).Methods("GET")
+
+	// Protected API Routes
+	api := r.PathPrefix("/api").Subrouter()
+	api.Use(AuthMiddleware)
+	api.HandleFunc("/mempool", handleGetMempool).Methods("GET")
+	api.HandleFunc("/transaction", handlePostTransaction).Methods("POST")
+	api.HandleFunc("/mine", handleMineBlock).Methods("POST")
+
+	// Serve Vite-built frontend
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./frontend/dist/"))))
+
+	fmt.Printf("Onigiri.Z Enterprise Node started on http://localhost:8080 (Difficulty: %d)\n", difficulty)
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

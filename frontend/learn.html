@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Blockchain Works | Onigiri.Z</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <header>
+            <div class="brand">
+                <span class="brand-icon">🍙</span>
+                <h1 data-i18n="title">Onigiri.Z <span class="tag">Learn</span></h1>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-lang" id="lang-toggle">MM</button>
+                <a href="/index.html" class="btn btn-back" data-i18n="back_btn">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <main class="learn-main">
+            <!-- Section 1: Hashing -->
+            <section class="learn-section" id="sec-hash">
+                <div class="sec-info">
+                    <div class="sec-number">01</div>
+                    <h2 data-i18n="sec1_title">Cryptographic Hashing</h2>
+                    <p data-i18n="sec1_desc">A hash function takes any input and produces a fixed-length fingerprint.
+                        Even a tiny change in the input produces a completely different hash.</p>
+                </div>
+                <div class="card demo-card">
+                    <h3 data-i18n="sec1_demo_title">Try It: SHA-256 Hashing</h3>
+                    <div class="input-group">
+                        <label data-i18n="sec1_input_label">Enter any text:</label>
+                        <input type="text" id="hash-input" value="Hello, Onigiri!" placeholder="Type something...">
+                    </div>
+                    <div class="hash-output">
+                        <div class="hash-label">SHA-256 Output:</div>
+                        <code id="hash-result" class="hash-val-big">Computing…</code>
+                    </div>
+                    <p class="hint" data-i18n="sec1_hint">Try changing a single character and watch the entire hash
+                        change!</p>
+                </div>
+            </section>
+
+            <!-- Section 2: Block Structure -->
+            <section class="learn-section" id="sec-block">
+                <div class="sec-info">
+                    <div class="sec-number">02</div>
+                    <h2 data-i18n="sec2_title">Block Structure</h2>
+                    <p data-i18n="sec2_desc">Each block contains: a list of transactions, a timestamp, the hash of the
+                        previous block, and its own hash. This forms an unbreakable chain.</p>
+                </div>
+                <div class="card demo-card">
+                    <h3 data-i18n="sec2_demo_title">Interactive Block</h3>
+                    <div class="demo-block-chain" id="demo-chain">
+                        <!-- Blocks will be rendered by JS -->
+                    </div>
+                    <p class="hint" data-i18n="sec2_hint">Each block's hash depends on the previous block. This is
+                        what makes the chain immutable.</p>
+                </div>
+            </section>
+
+            <!-- Section 3: Proof of Work -->
+            <section class="learn-section" id="sec-pow">
+                <div class="sec-info">
+                    <div class="sec-number">03</div>
+                    <h2 data-i18n="sec3_title">Proof of Work Mining</h2>
+                    <p data-i18n="sec3_desc">Miners must find a special number (nonce) that makes the block's hash start
+                        with a certain number of zeros. This takes computational effort, securing the network.</p>
+                </div>
+                <div class="card demo-card">
+                    <h3 data-i18n="sec3_demo_title">⛏️ Mine a Block</h3>
+                    <div class="pow-controls">
+                        <div class="input-group">
+                            <label data-i18n="sec3_data_label">Block data:</label>
+                            <input type="text" id="pow-data" value="Onigiri → Sushi: 10 OGZ"
+                                placeholder="Transaction data">
+                        </div>
+                        <div class="input-group">
+                            <label data-i18n="sec3_diff_label">Difficulty (leading zeros):</label>
+                            <input type="range" id="pow-difficulty" min="1" max="5" value="2">
+                            <span id="pow-diff-display" class="range-label">2</span>
+                        </div>
+                        <button class="btn btn-mine" id="pow-mine-btn" data-i18n="sec3_mine_btn">⛏️ Start
+                            Mining</button>
+                    </div>
+                    <div class="pow-result hidden" id="pow-result">
+                        <div class="pow-stats">
+                            <div class="stat">
+                                <div class="label" data-i18n="sec3_nonce">Nonce Found</div>
+                                <div class="value" id="pow-nonce">—</div>
+                            </div>
+                            <div class="stat">
+                                <div class="label" data-i18n="sec3_attempts">Attempts</div>
+                                <div class="value" id="pow-attempts">—</div>
+                            </div>
+                            <div class="stat">
+                                <div class="label" data-i18n="sec3_time">Time</div>
+                                <div class="value" id="pow-time">—</div>
+                            </div>
+                        </div>
+                        <div class="hash-output">
+                            <div class="hash-label" data-i18n="sec3_hash_label">Winning Hash (starts with zeros):</div>
+                            <code id="pow-hash" class="hash-val-big">—</code>
+                        </div>
+                    </div>
+                    <div class="pow-log" id="pow-log"></div>
+                    <p class="hint" data-i18n="sec3_hint">Higher difficulty = more zeros required = exponentially
+                        more attempts!</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Tamper Detection -->
+            <section class="learn-section" id="sec-tamper">
+                <div class="sec-info">
+                    <div class="sec-number">04</div>
+                    <h2 data-i18n="sec4_title">Tamper Detection</h2>
+                    <p data-i18n="sec4_desc">If anyone tries to alter the data in a block, its hash changes, which
+                        breaks the link to the next block — making fraud immediately detectable.</p>
+                </div>
+                <div class="card demo-card">
+                    <h3 data-i18n="sec4_demo_title">Try Tampering</h3>
+                    <div class="tamper-chain" id="tamper-chain">
+                        <!-- Rendered by JS -->
+                    </div>
+                    <button class="btn btn-primary" id="tamper-btn" style="margin-top: 1rem;"
+                        data-i18n="sec4_tamper_btn">Tamper with Block #1</button>
+                    <button class="btn btn-reset hidden" id="reset-btn" style="margin-top: 0.5rem;"
+                        data-i18n="sec4_reset_btn">Reset Chain</button>
+                    <p class="hint" id="tamper-hint" data-i18n="sec4_hint">Click "Tamper" to modify Block #1's data
+                        and see what happens to the chain.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer data-i18n="footer">&copy; 2026 Onigiri.Z Enterprise · Educational Visualization</footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script type="module" src="/src/learn.ts"></script>
+</body>
+
+</html>
