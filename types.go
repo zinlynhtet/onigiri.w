@@ -34,6 +34,8 @@ type User struct {
 	Username      string `json:"username"`
 	PasswordHash  string `json:"password_hash"`
 	WalletAddress string `json:"wallet_address"`
+	ResetToken    string `json:"reset_token,omitempty"`
+	ResetExpires  int64  `json:"reset_expires,omitempty"`
 }
 
 // BlockChain is the structure holding the blocks and pending transactions

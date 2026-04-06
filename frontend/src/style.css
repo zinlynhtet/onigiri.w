@@ -724,6 +724,45 @@ footer {
     color: var(--text-dim);
 }
 
+.auth-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+    font-size: 0.8rem;
+}
+
+.auth-link:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+.pwd-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.btn-eye {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-eye:hover {
+    color: var(--text);
+}
+
 /* ─── Learn Page (Blockchain Visualization) ─── */
 .learn-main {
     display: flex;

@@ -22,6 +22,8 @@ func main() {
 	// Public API Routes
 	r.HandleFunc("/api/register", handleRegister).Methods("POST")
 	r.HandleFunc("/api/login", handleLogin).Methods("POST")
+	r.HandleFunc("/api/request-reset", handleRequestReset).Methods("POST")
+	r.HandleFunc("/api/reset-password", handleResetPassword).Methods("POST")
 	r.HandleFunc("/api/blockchain", handleGetBlockchain).Methods("GET")
 	r.HandleFunc("/api/balance/{address}", handleGetBalance).Methods("GET")
 

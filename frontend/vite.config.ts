@@ -13,6 +13,9 @@ export default defineConfig({
       input: {
         main: 'index.html',
         login: 'login.html',
+        signup: 'signup.html',
+        forgot: 'forgot-password.html',
+        reset: 'reset-password.html',
         learn: 'learn.html'
       }
     }

@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"sync"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -104,4 +105,61 @@ func generateWalletAddress() string {
 		return "ogz_error"
 	}
 	return "ogz_" + hex.EncodeToString(bytes)
+}
+
+func generatePasswordResetToken(email string) (string, error) {
+	userStore.mu.Lock()
+	defer userStore.mu.Unlock()
+
+	user, exists := userStore.Users[email]
+	if !exists {
+		return "", fmt.Errorf("user not found")
+	}
+
+	bytes := make([]byte, 32)
+	if _, err := rand.Read(bytes); err != nil {
+		return "", err
+	}
+	token := hex.EncodeToString(bytes)
+
+	user.ResetToken = token
+	user.ResetExpires = time.Now().Add(1 * time.Hour).Unix()
+	userStore.Users[email] = user
+	saveUsers()
+
+	return token, nil
+}
+
+func validateAndResetPassword(token, newPassword string) error {
+	userStore.mu.Lock()
+	defer userStore.mu.Unlock()
+
+	var targetEmail string
+	for email, user := range userStore.Users {
+		if user.ResetToken == token {
+			if time.Now().Unix() > user.ResetExpires {
+				return fmt.Errorf("reset token expired")
+			}
+			targetEmail = email
+			break
+		}
+	}
+
+	if targetEmail == "" {
+		return fmt.Errorf("invalid reset token")
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	user := userStore.Users[targetEmail]
+	user.PasswordHash = string(hashedPassword)
+	user.ResetToken = ""
+	user.ResetExpires = 0
+	userStore.Users[targetEmail] = user
+	saveUsers()
+
+	return nil
 }
