@@ -2,7 +2,7 @@
 
 **Onigiri.Z** is a high-performance, modular blockchain platform built with a **Go** backend and **TypeScript** frontend. It features Proof of Work (PoW) mining, JWT authentication, and a premium enterprise dashboard.
 
-## 🚀 Key Features
+## Key Features
 - **Proof of Work (PoW)**: Mining with configurable difficulty (4 leading zeros).
 - **JWT Authentication**: Secure register/login with bcrypt password hashing.
 - **Transaction Mempool**: Async transaction pooling before block creation.

@@ -1,10 +1,10 @@
 # Onigiri.Z Blockchain - Deployment Guide
 
-## 🚀 Quick Start Deployment
+## Quick Start Deployment
 
 ### Current Status
-✅ **Frontend**: Deployed to GitHub Pages
-❌ **Backend**: Ready to deploy to Render (Free Tier)
+ **Frontend**: Deployed to GitHub Pages
+ **Backend**: Ready to deploy to Render (Free Tier)
 
 ---
 
@@ -22,9 +22,9 @@
 
 ### Step 2: Deploy Backend Service
 1. In Render dashboard, click **"New +"** → **"Web Service"**
-2. **Select Repository**: Choose `zinlynhtet/onigiri.w` (your blockchain repo)
+2. **Select Repository**: Choose `zinlynhtet/onigiri.w` 
 3. **Configure Service**:
-   - **Name**: `onigiri-api` (or choose a unique name)
+   - **Name**: `onigiri.w-api` 
    - **Environment**: `Go`
    - **Build Command**: `go build -o server .`
    - **Start Command**: `./server`
@@ -44,7 +44,7 @@ Edit `frontend/src/shared/config.ts` line 19:
 ```typescript
 export const API_BASE = window.location.hostname === 'localhost'
   ? ''
-  : 'https://your-actual-render-url.onrender.com'; // 👈 Replace with your Render URL
+  : 'https://onigiri-w-api.onrender.com/'; 
 ```
 
 ### Step 5: Deploy Frontend (Auto)
@@ -58,7 +58,7 @@ GitHub Actions automatically deploys - no manual steps!
 
 ### Step 6: Test the Connection
 1. Visit https://zinlynhtet.github.io/onigiri.w/login.html
-2. Health check: Visit https://your-render-url.onrender.com/api/health
+2. Health check: Visit https://onigiri-w-api.onrender.com/api/health
 3. Try signing up or logging in
 
 ---
@@ -99,7 +99,7 @@ The frontend auto-proxies API calls to localhost:8080 via Vite.
 
 ### Backend Health (Render)
 ```bash
-curl https://your-render-url.onrender.com/api/health
+curl https://onigiri-w-api.onrender.com/api/health
 # Response: {"status":"healthy","message":"Onigiri.Z Enterprise Node is running"}
 ```
 
@@ -178,4 +178,3 @@ Once Render shows green status:
 - Suitable for dev/demo projects
 - Upgrade anytime as users grow
 
-🎉 **Congratulations! Your Onigiri.Z platform is now in production!**
