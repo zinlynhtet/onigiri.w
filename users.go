@@ -48,7 +48,8 @@ func saveUsers() {
 	}
 	err = os.WriteFile(usersFile, data, 0644)
 	if err != nil {
-		log.Printf("Error saving users: %v", err)
+		log.Printf("Warning: Could not save users file: %v (continuing anyway)", err)
+		// Don't fail - Render has ephemeral storage, users are kept in memory
 	}
 }
 

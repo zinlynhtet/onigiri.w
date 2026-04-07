@@ -29,16 +29,23 @@ type Claims struct {
 func handleRegister(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
 	if err := json.NewDecoder(r.Body).Decode(&creds); err != nil {
+		log.Printf("Register decode error: %v", err)
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid request format"))
 		return
 	}
 
+	log.Printf("Register attempt: email=%s, username=%s", creds.Email, creds.Username)
+
 	user, err := registerUser(creds.Email, creds.Username, creds.Password)
 	if err != nil {
+		log.Printf("Register error: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
+	log.Printf("User registered successfully: %s", creds.Email)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(user)
 }
@@ -79,14 +86,14 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		Path:    "/",
 	})
 
-	log.Printf("User logged in: %s (%s)", user.Username, user.Email)
-	
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"token":          tokenString,
 		"username":       user.Username,
 		"wallet_address": user.WalletAddress,
 	})
+
+	log.Printf("User logged in: %s (%s)", user.Username, user.Email)
 }
 
 // ─── SMTP Password Reset ───
