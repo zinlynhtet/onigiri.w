@@ -20,13 +20,13 @@ const userContextKey contextKey = "user"
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		tokenString := ""
-		
+
 		// 1. Check Cookie
 		c, err := r.Cookie("token")
 		if err == nil {
 			tokenString = c.Value
 		}
-		
+
 		// 2. Check Authorization header
 		if tokenString == "" {
 			authHeader := r.Header.Get("Authorization")
@@ -60,7 +60,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 func handleGetBlockchain(w http.ResponseWriter, r *http.Request) {
 	blockchain.mu.Lock()
 	defer blockchain.mu.Unlock()
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(blockchain.Blocks); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -118,7 +118,7 @@ func handleGetBalance(w http.ResponseWriter, r *http.Request) {
 func handleGetMempool(w http.ResponseWriter, r *http.Request) {
 	blockchain.mu.Lock()
 	defer blockchain.mu.Unlock()
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(blockchain.Mempool); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -149,10 +149,10 @@ func handlePostTransaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid transaction data", http.StatusBadRequest)
 		return
 	}
-	
+
 	// Force the sender to be the authenticated user's wallet address
 	tx.Sender = user.WalletAddress
-	
+
 	// Forbid self-transfer
 	if tx.Receiver == tx.Sender {
 		http.Error(w, "Cannot send OGZ to your own wallet", http.StatusBadRequest)
@@ -164,16 +164,16 @@ func handlePostTransaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing or invalid transaction fields", http.StatusBadRequest)
 		return
 	}
-	
+
 	tx.Timestamp = time.Now().Format(time.RFC3339)
-	
+
 	blockchain.mu.Lock()
 	blockchain.Mempool = append(blockchain.Mempool, tx)
 	blockchain.saveChain()
 	blockchain.mu.Unlock()
-	
+
 	log.Printf("Transaction queued by %s: %s -> %s (%.2f OGZ)", user.Username, tx.Sender, tx.Receiver, tx.Amount)
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusAccepted)
 	json.NewEncoder(w).Encode(tx)
@@ -214,7 +214,7 @@ func handleMineBlock(w http.ResponseWriter, r *http.Request) {
 func handleHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
-		"status": "healthy",
+		"status":  "healthy",
 		"message": "Onigiri.Z Enterprise Node is running",
 	})
 }
