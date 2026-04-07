@@ -16,7 +16,7 @@
  */
 export const API_BASE = window.location.hostname === 'localhost'
   ? ''
-  : 'https://onigiri-api.onrender.com'; // 👈 UPDATE THIS with your Render backend URL after deployment
+  : 'https://onigiri-w-api.onrender.com';
 
 /**
  * Determines the correct relative path prefix for navigation.
