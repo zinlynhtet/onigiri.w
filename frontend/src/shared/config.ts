@@ -2,20 +2,28 @@
 
 /**
  * API_BASE: The base URL for all backend API calls.
- * - For local development (frontend + Go backend on same machine): leave as ''
- * - For production (frontend on GitHub Pages, backend elsewhere):
- *   set to your backend URL, e.g. 'https://your-server.com'
+ *
+ * IMPORTANT: You need to deploy your Go backend server and add its URL here.
+ *
+ * Development (localhost):
+ *   - Keep empty string '' for local dev (proxied by Vite)
+ *
+ * Production (GitHub Pages):
+ *   - BEFORE DEPLOYING: Update this to your backend server URL
+ *   - Example: 'https://api.yourdomain.com'
+ *   - Example: 'https://your-render-app.onrender.com'
+ *   - Make sure backend has CORS enabled for https://zinlynhtet.github.io
  */
-export const API_BASE = window.location.hostname.includes('github.io') 
-  ? 'http://localhost:8080' 
-  : '';
+export const API_BASE = window.location.hostname === 'localhost'
+  ? ''
+  : 'https://onigiri-api.onrender.com'; // 👈 UPDATE THIS with your Render backend URL after deployment
 
 /**
  * Determines the correct relative path prefix for navigation.
  * Works on both localhost (Vite dev) and GitHub Pages subdirectory.
  */
 export function getBasePath(): string {
-  // Vite injects import.meta.env.BASE_URL which is './' from our config
+  // Vite injects import.meta.env.BASE_URL which is '/onigiri.w/' in production
   return import.meta.env.BASE_URL || './';
 }
 

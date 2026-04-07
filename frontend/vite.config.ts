@@ -1,12 +1,19 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: './',
+  // GitHub Pages subdirectory: /onigiri.w/
+  // Development: use './' for relative paths
+  base: process.env.NODE_ENV === 'production' ? '/onigiri.w/' : './',
+
   server: {
     proxy: {
-      '/api': 'http://localhost:8080'
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      }
     }
   },
+
   build: {
     outDir: 'dist',
     rollupOptions: {

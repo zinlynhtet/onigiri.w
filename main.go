@@ -49,6 +49,7 @@ func main() {
 	r.HandleFunc("/api/reset-password", handleResetPassword).Methods("POST", "OPTIONS")
 	r.HandleFunc("/api/blockchain", handleGetBlockchain).Methods("GET", "OPTIONS")
 	r.HandleFunc("/api/balance/{address}", handleGetBalance).Methods("GET", "OPTIONS")
+	r.HandleFunc("/api/health", handleHealth).Methods("GET", "OPTIONS")
 
 	// Protected API Routes
 	api := r.PathPrefix("/api").Subrouter()
@@ -63,6 +64,13 @@ func main() {
 	// Wrap entire router with CORS middleware
 	handler := CORSMiddleware(r)
 
-	fmt.Printf("Onigiri.Z Enterprise Node started on http://localhost:8080 (Difficulty: %d)\n", difficulty)
-	log.Fatal(http.ListenAndServe(":8080", handler))
+	// Get port from environment variable, default to 8080 for local development
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	addr := ":" + port
+	fmt.Printf("Onigiri.Z Enterprise Node started on http://localhost:%s (Difficulty: %d)\n", port, difficulty)
+	log.Fatal(http.ListenAndServe(addr, handler))
 }

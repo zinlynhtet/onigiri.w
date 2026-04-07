@@ -209,3 +209,12 @@ func handleMineBlock(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(newBlock)
 }
+
+// handleHealth returns a simple health check response
+func handleHealth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"status": "healthy",
+		"message": "Onigiri.Z Enterprise Node is running",
+	})
+}

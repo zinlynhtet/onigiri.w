@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: onigiri-api
+    env: go
+    plan: free
+    buildCommand: go build -o server .
+    startCommand: ./server
+    envVars:
+      - key: ALLOWED_ORIGIN
+        value: https://zinlynhtet.github.io
+      - key: PORT
+        fromPort: true
